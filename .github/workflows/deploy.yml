@@ -26,10 +26,9 @@ jobs:
               working-directory: functions
               run: npm run build
 
-            # https://github.com/FirebaseExtended/action-hosting-deploy
-            - uses: FirebaseExtended/action-hosting-deploy@v0
+            - name: Deploy to Firebase
+              uses: w9jds/firebase-action@master
               with:
-                  repoToken: "${{ secrets.GITHUB_TOKEN }}"
-                  firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
-                  projectId: war-brokers-projects
-                  channelId: live
+                  args: deploy --only functions
+              env:
+                  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}

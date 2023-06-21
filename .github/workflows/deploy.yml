@@ -4,6 +4,8 @@ on:
     push:
         branches:
             - master
+    # allow manual dispatch
+    workflow_dispatch:
 
 jobs:
     deploy:

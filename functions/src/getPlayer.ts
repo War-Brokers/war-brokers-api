@@ -1,12 +1,18 @@
-import express from "express"
 import { firestore } from "firebase-admin"
+import { info } from "firebase-functions/logger"
 import { onRequest } from "firebase-functions/v2/https"
 
-const app = express()
-app.get("/:uid", async (req, res) => {
+export const getPlayer = onRequest(async (req, res) => {
+	info(`attempting to fetch user info. UID: ${String(req.query.uid)}`)
+
+	if (!req.query.uid) {
+		res.json("Missing query parameter: uid")
+		return
+	}
+
 	const doc = await firestore()
 		.collection("players")
-		.doc(req.params.uid)
+		.doc(String(req.query.uid))
 		.get()
 
 	const data = doc.data()
@@ -14,9 +20,8 @@ app.get("/:uid", async (req, res) => {
 	if (!data) {
 		res.status(400)
 		res.json("invalid player UID")
+		return
 	}
 
 	res.json(data)
 })
-
-export const getPlayer = onRequest(app)

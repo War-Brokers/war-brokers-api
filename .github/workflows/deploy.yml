@@ -17,12 +17,12 @@ jobs:
                   node-version: 18.x
 
             - name: Install dependencies
+              working-directory: functions
               run: npm install
 
             - name: Build
-              run: |
-                  cd functions
-                  npm run build
+              working-directory: functions
+              run: npm run build
 
             - uses: FirebaseExtended/action-hosting-deploy@v0
               with:

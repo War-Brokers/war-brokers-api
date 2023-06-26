@@ -23,10 +23,7 @@ jobs:
               with:
                   node-version: 18.x
                   cache: "pnpm"
-
-            - name: Install Dependencies
-              working-directory: functions
-              run: pnpm install --frozen-lockfile
+                  cache-dependency-path: functions/pnpm-lock.yaml
 
             - name: Build
               working-directory: functions

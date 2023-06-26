@@ -11,20 +11,26 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
+            - name: Checkout Repo
+              uses: actions/checkout@v3
+
+            - uses: pnpm/action-setup@v2
+              with:
+                  version: 8
 
             - name: Setup Node.js
               uses: actions/setup-node@v3
               with:
                   node-version: 18.x
+                  cache: "pnpm"
 
-            - name: Install dependencies
+            - name: Install Dependencies
               working-directory: functions
-              run: npm install
+              run: pnpm install --frozen-lockfile
 
             - name: Build
               working-directory: functions
-              run: npm run build
+              run: pnpm build
 
             - name: Deploy to Firebase
               uses: w9jds/firebase-action@master

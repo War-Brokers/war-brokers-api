@@ -5,6 +5,10 @@ import { type Player } from "wb-types"
 
 @Route("/players")
 export class PlayerController extends Controller {
+	/**
+	 * Retrieves player data.
+	 * @param uid War Brokers Player UID
+	 */
 	@Get("{uid}")
 	public async getPlayer(
 		@Path() uid: string,

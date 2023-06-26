@@ -6,7 +6,7 @@ export class PingController extends Controller {
 	 * Checks whether the server is alive or not
 	 */
 	@Get("/")
-	public getPlayer(): "pong!" {
+	public ping(): "pong!" {
 		return "pong!"
 	}
 }

@@ -1,10 +1,17 @@
-import express from "express"
-import { firestore } from "firebase-admin"
+import express, {
+	json,
+	Request as ExRequest,
+	Response as ExResponse,
+	urlencoded,
+} from "express"
 // eslint-disable-next-line import/no-unresolved
 import { initializeApp } from "firebase-admin/app"
-import { info } from "firebase-functions/logger"
 import { setGlobalOptions } from "firebase-functions/v2"
 import { onRequest } from "firebase-functions/v2/https"
+import swaggerUi from "swagger-ui-express"
+
+import { RegisterRoutes } from "../build/routes"
+import swaggerDoc from "../build/swagger.json"
 
 initializeApp()
 
@@ -14,27 +21,20 @@ setGlobalOptions({ maxInstances: 10 })
 
 const app = express()
 
-app.get("/ping", (request, response) => {
-	response.send("pong!")
-})
-
-app.get("/players/:uid", async (req, res) => {
-	info(`attempting to fetch user info. UID: ${req.params.uid}`)
-
-	const doc = await firestore()
-		.collection("players")
-		.doc(req.params.uid)
-		.get()
-
-	const data = doc.data()
-
-	if (!data) {
-		res.status(400)
-		res.json("invalid player UID")
-		return
+app.use(
+	urlencoded({
+		extended: true,
+	})
+)
+app.use(json())
+app.use(
+	"/api-docs",
+	swaggerUi.serve,
+	async (_req: ExRequest, res: ExResponse) => {
+		return res.send(swaggerUi.generateHTML(swaggerDoc))
 	}
+)
 
-	res.json(data)
-})
+RegisterRoutes(app)
 
 export const api = onRequest(app)

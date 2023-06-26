@@ -2,5 +2,12 @@
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": true
 	},
-	"cSpell.words": ["developomp", "firestore", "predeploy", "WBAPI"]
+	"cSpell.words": [
+		"developomp",
+		"firestore",
+		"openapi",
+		"predeploy",
+		"tsoa",
+		"WBAPI"
+	]
 }
